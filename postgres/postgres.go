@@ -1,4 +1,4 @@
-package db
+package postgres
 
 import (
 	"database/sql"
@@ -7,26 +7,36 @@ import (
 	_ "github.com/lib/pq"
 )
 
+var db *sql.DB
+
 const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
 	password = ""
-	dbname   = "virtual-wallet"
+	dbname   = "virtual_wallet"
 )
 
 func Init() error {
-	postgresInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+	var err error
+
+	databaseSource := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	db, err := sql.Open("postgres", postgresInfo)
+	db, err = sql.Open("postgres", databaseSource)
 	if err != nil {
 		return err
 	}
 
-	print(db.Ping())
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
 
-	defer db.Close()
 	return nil
+}
+
+func GetPostgreSQL() *sql.DB {
+	return db
 }

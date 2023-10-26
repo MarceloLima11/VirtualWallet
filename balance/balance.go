@@ -1,19 +1,21 @@
 package balance
 
 import (
-	"fmt"
+	"database/sql"
 
-	"github.com/gin-gonic/gin"
+	"github.com/MarceloLima11/VirtualWallet/postgres"
+	"github.com/shopspring/decimal"
 )
 
+var db *sql.DB
+
 type (
-	User struct {
+	Account struct {
 		Id      int64
-		Balance float64
+		Balance decimal.Decimal
 	}
 )
 
-func UserBalance(ctx *gin.Context) {
-	id := ctx.Param("id")
-	fmt.Print(id)
+func GetDatabaseInstance() {
+	db = postgres.GetPostgreSQL()
 }
