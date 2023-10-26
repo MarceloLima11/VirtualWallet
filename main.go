@@ -12,5 +12,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	routes.Init()
+	if err := routes.Init(); err != nil {
+		log.Fatal(err)
+	}
 }

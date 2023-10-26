@@ -9,7 +9,7 @@ const (
 	path = "api/account"
 )
 
-func Init() {
+func Init() error {
 	r := gin.Default()
 	balance.GetDatabaseInstance()
 
@@ -19,5 +19,9 @@ func Init() {
 		v1.GET("/transfer/:debtorID/:beneficiaryID/:amount", balance.BalanceTransfer)
 	}
 
-	r.Run(":8080")
+	if err := r.Run(":8080"); err != nil {
+		return err
+	}
+
+	return nil
 }
